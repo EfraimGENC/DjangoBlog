@@ -1,0 +1,59 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+{{ article.title }}
+{% endblock title %}
+
+{% block breadcrumb %}
+{{ article.title }}
+{% endblock breadcrumb %}
+
+{% block body %}
+<h3>{{ article.title }}</h3>
+<hr>
+by {{ article.author }}
+<hr>
+{{ article.created_date }}
+<hr>
+{% if article.article_image %}
+<img src="{{ article.article_image.url }}" class="img-fluid">
+{% endif %}
+<hr>
+{{ article.content|safe }}
+<div class="card mb-2 bg-success">
+  <div class="card-header text-center h4 text-white">
+    YORUM YAP
+  </div>
+  <div class="card-body">
+    <form method="post" action="{% url 'article:comments' article.id %}">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="yorumcu" class="text-white">Yorumcu</label>
+        <input name="cauthor" type="text" class="form-control" id="yorumcu" aria-describedby="yorumcuHelp" placeholder="Adınız">
+        <small id="yorumcuHelp" class="form-text text-white">We'll never share your email with anyone else.</small>
+    </div>
+    <div class="form-group">
+        <label for="yorum text-white" class="text-white">Yorum</label>
+        <textarea name="ccontent" class="form-control" id="yorum" aria-describedby="yorumHelp" placeholder="Yorumunuz"></textarea>
+        <small id="yorumHelp" class="form-text text-white">We'll never share your email with anyone else.</small>
+    </div>
+    <button type="submit" class="btn btn-light">Yorum Yap</button>
+    </form>
+  </div>
+</div>
+{% if comments %}
+    {% for comment in comments %}
+        <div class="card text-center mb-2">
+        <div class="card-header bg-dark text-white">
+            {{ comment.comments_author }}
+        </div>
+        <div class="card-body">
+            <span class="card-text">{{ comment.comments_content }}</span>
+        </div>
+        <div class="card-footer text-muted">
+            {{ comment.comment_date }}
+        </div>
+        </div>
+    {% endfor %}
+{% endif %}
+{% endblock body %}

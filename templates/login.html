@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+
+{% block breadcrumb %}
+Login
+{% endblock breadcrumb %}
+
+{% block title %}
+Login
+{% endblock title %}
+
+{% block body %}
+{% load crispy_forms_tags %}
+<div class="row">
+  <div class="col-md-6 offset-md-3">
+    <h3>Giriş Yap</h3>
+    <hr>
+    <form method = 'post'>
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.GET.next }}" />
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-primary float-right">Giriş Yap</button>
+    </form>
+  </div>
+</div>
+{% endblock body %}
